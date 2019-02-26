@@ -6,6 +6,10 @@ you will need to wrap your kms-plugin bosh-release in a
 
 Instructions to build a Kubernetes Compatible KMS Plugin can be found [here](link to open source docs).
 
+You will need to install your release as a [runtime config](https://bosh.io/docs/runtime-config/),
+which is a BOSH job that will be installed on every instance group that matches the information
+specified in the [include](https://bosh.io/docs/runtime-config/#placement-rules) block.
+
 ## Dependencies
 
 - To build the tile we will use [tile_generator](https://docs.pivotal.io/tiledev/2-4/tile-generator.html).
@@ -19,19 +23,11 @@ pip install tile-generator
 
 ## Make the tile
 
-You will need to install your release as a [runtime config](https://bosh.io/docs/runtime-config/),
-which is a BOSH job that will be installed on every instance group that matches the information
-specified in the [include](https://bosh.io/docs/runtime-config/#placement-rules) block.
+To use tile generator, you need a `tile.yml`, which contains configuration information, as well as the actual BOSH release you want to install. 
 
+Here is an example `tile.yml`
 
-```bash
-mkdir tile-repo
-pushd tile-repo
-  mkdir releases
-  touch icon.png # replace with a real icon image
-  mv <my-release>.tgz releases/
-
-  cat << EOF > tile.yml
+```yaml
 ---
 name: sample-credhub-kms-plugin-tile
 icon_file: icon.png
@@ -63,7 +59,13 @@ runtime_configs:
           jobs:
           - name: credhub
             release: credhub
-EOF
+```
 
+
+To build the tile, simply run
+```bash
 tile build
-popd
+```
+from the directory you wrote `tile.yml` in.
+
+
