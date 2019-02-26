@@ -18,6 +18,12 @@ pip install tile-generator
 ```
 
 ## Make the tile
+
+You will need to install your release as a [runtime config](https://bosh.io/docs/runtime-config/),
+which is a BOSH job that will be installed on every instance group that matches the information
+specified in the [include](https://bosh.io/docs/runtime-config/#placement-rules) block.
+
+
 ```bash
 mkdir tile-repo
 pushd tile-repo
@@ -37,7 +43,7 @@ packages:
   type: bosh-release
   path: releases/<my-release>.tgz
 
-forms: # Unfortunately this is needed do to tile_generator behavior
+forms: # Unfortunately this is needed due to tile_generator behavior
 - name: Fake
   label: Fake
   description: Fake
