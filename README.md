@@ -1,7 +1,7 @@
 # Building a Kubernetes Compatible Key Management Service Plugin Tile for Credhub in PCF
 
 In order to use a Kubernetes Compatible Key Management Service Plugin with a CredHub bundled with PCF,
-you will need to wrap your kms-plugin bosh-release in a
+you will need to wrap your kms-plugin BOSH release in a
 [tile](https://docs.pivotal.io/tiledev/2-4/index.html), which will be installed along side your PAS tile.
 
 Instructions to build a Kubernetes Compatible KMS Plugin can be found [here](link to open source docs).
