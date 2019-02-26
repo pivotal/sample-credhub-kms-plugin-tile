@@ -1,0 +1,36 @@
+---
+# The high-level description of your tile.
+# Replace these properties with real values.
+#
+name: sample-credhub-kms-plugin-tile # By convention lowercase with dashes
+icon_file: icon.png
+label: Sample CredHub KMS Plugin
+description: Sample CredHub KMS Plugin
+# metadata_version: 1.8                 # Optional, defaults to 1.8
+#
+packages:
+- name: sample_credhub_kms_plugin
+  type: bosh-release
+  path: releases/sample-credhub-kms-plugin-0.0.2.tgz
+
+forms:
+- name: Fake
+  label: Fake
+  description: Fake
+
+#
+runtime_configs:
+  - name: kms-plugin
+    runtime_config:
+      releases:
+      - name: sample-credhub-kms-plugin
+        version: "0.0.2"
+      addons:
+      - name: kms-plugin
+        jobs:
+        - name: kms-plugin
+          release: sample-credhub-kms-plugin
+        include:
+          jobs:
+          - name: credhub
+            release: credhub
