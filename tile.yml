@@ -7,24 +7,32 @@ description: Sample CredHub KMS Plugin
 packages:
 - name: sample_credhub_kms_plugin
   type: bosh-release
-  path: releases/sample-credhub-kms-plugin-0.0.2.tgz
+  path: releases/sample-credhub-kms-plugin-0.0.3.tgz
 
 forms:
-- name: Fake
-  label: Fake
-  description: Fake
+- name: plugin-properties
+  label: Plugin Properties
+  description: Configure your plugin
+  properties:
+  - name: socket_endpoint
+    type: string
+    label: Socket Endpoint
+
 
 runtime_configs:
   - name: kms-plugin
     runtime_config:
       releases:
       - name: sample-credhub-kms-plugin
-        version: "0.0.2"
+        version: "0.0.3"
       addons:
       - name: kms-plugin
         jobs:
         - name: kms-plugin
           release: sample-credhub-kms-plugin
+          properties:
+            kms-plugin:
+              socket_endpoint: (( .properties.socket_endpoint ))
         include:
           jobs:
           - name: credhub
