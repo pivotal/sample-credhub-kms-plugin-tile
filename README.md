@@ -25,6 +25,9 @@ pip install tile-generator
 
 To use tile generator, you need a `tile.yml`, which contains configuration information, as well as the actual BOSH release you want to install. 
 
+You can allow an operator to configure arbitrary properties in your manifest using [custom forms and properties](https://docs.pivotal.io/tiledev/2-4/tile-generator.html#custom-forms),
+here we allow the operator to configure the socket endpoint for the plugin to listen to CredHub on.
+
 Here is an example `tile.yml`
 
 ```yaml
@@ -39,26 +42,32 @@ packages:
   type: bosh-release
   path: releases/<my-release>.tgz
 
-forms: # Unfortunately this is needed due to tile_generator behavior
-- name: Fake
-  label: Fake
-  description: Fake
+forms:
+- name: plugin-properties
+  label: Plugin Properties
+  description: Configure your plugin
+  properties:
+  - name: socket_endpoint
+    type: string
+    label: Socket Endpoint
 
 runtime_configs:
-  - name: some-runtime-config
-    runtime_config:
-      releases:
-      - name: my-release-name
-        version: "my-release-version"
-      addons:
-      - name: some-addon-name
+- name: some-runtime-config
+  runtime_config:
+    releases:
+    - name: my-release-name
+      version: "my-release-version"
+    addons:
+    - name: some-addon-name
+      jobs:
+      - name: my-job-name
+        release: my-release-name
+        properties:
+          socket_endpoint: (( .properties.socket_endpoint ))
+      include:
         jobs:
-        - name: my-job-name
-          release: my-release-name
-        include:
-          jobs:
-          - name: credhub
-            release: credhub
+        - name: credhub
+          release: credhub
 ```
 
 
@@ -67,5 +76,13 @@ To build the tile, simply run
 tile build
 ```
 from the directory you wrote `tile.yml` in.
+
+## Install the tile
+
+- Upload the product to an Opsmanager.
+
+- Configure the tile.
+
+- Click apply changes.
 
 

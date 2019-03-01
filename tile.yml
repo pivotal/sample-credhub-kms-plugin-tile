@@ -20,20 +20,20 @@ forms:
 
 
 runtime_configs:
-  - name: kms-plugin
-    runtime_config:
-      releases:
-      - name: sample-credhub-kms-plugin
-        version: "0.0.3"
-      addons:
+- name: kms-plugin
+  runtime_config:
+    releases:
+    - name: sample-credhub-kms-plugin
+      version: "0.0.3"
+    addons:
+    - name: kms-plugin
+      jobs:
       - name: kms-plugin
+        release: sample-credhub-kms-plugin
+        properties:
+          kms-plugin:
+            socket_endpoint: (( .properties.socket_endpoint ))
+      include:
         jobs:
-        - name: kms-plugin
-          release: sample-credhub-kms-plugin
-          properties:
-            kms-plugin:
-              socket_endpoint: (( .properties.socket_endpoint ))
-        include:
-          jobs:
-          - name: credhub
-            release: credhub
+        - name: credhub
+          release: credhub
