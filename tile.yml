@@ -5,9 +5,9 @@ label: Sample CredHub KMS Plugin
 description: Sample CredHub KMS Plugin
 
 packages:
-- name: sample_credhub_kms_plugin
+- name: sample-credhub-kms-plugin
   type: bosh-release
-  path: releases/sample-credhub-kms-plugin-0.0.3.tgz
+  path: releases/sample-credhub-kms-plugin-0.0.5.tgz
 
 forms:
 - name: plugin-properties
@@ -24,7 +24,7 @@ runtime_configs:
   runtime_config:
     releases:
     - name: sample-credhub-kms-plugin
-      version: "0.0.3"
+      version: "0.0.5"
     addons:
     - name: kms-plugin
       jobs:
@@ -32,8 +32,17 @@ runtime_configs:
         release: sample-credhub-kms-plugin
         properties:
           kms-plugin:
-            socket_endpoint: (( .properties.socket_endpoint ))
+            socket_endpoint: (( .properties.socket_endpoint.value ))
+            certificate: ((( provider-certificate.certificate )))
+            private_key: ((( provider-certificate.private_key )))
       include:
         jobs:
         - name: credhub
           release: credhub
+
+variables:
+- name: provider-certificate
+  type: certificate
+  options:
+    ca: /services/tls_ca
+    common_name: credhub-kms

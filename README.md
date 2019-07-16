@@ -63,13 +63,26 @@ runtime_configs:
       - name: my-job-name
         release: my-release-name
         properties:
-          socket_endpoint: (( .properties.socket_endpoint ))
+          kms-plugin:
+            socket_endpoint: (( .properties.socket_endpoint.value ))
+            certificate: ((( provider-certificate.certificate )))
+            private_key: ((( provider-certificate.private_key )))
       include:
         jobs:
         - name: credhub
           release: credhub
+
+variables:
+- name: provider-certificate
+  type: certificate
+  options:
+    ca: /services/tls_ca
+    common_name: credhub-kms
 ```
 
+
+Note: The ca and hostname in the `provider-certificate` variable must be exactly
+the same as the example above as these are the only values the PAS tile will accept.
 
 To build the tile, simply run
 ```bash
