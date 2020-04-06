@@ -39,10 +39,10 @@ runtime_configs:
         jobs:
         - name: credhub
           release: credhub
+    variables:
+    - name: provider-certificate
+      type: certificate
+      options:
+        ca: /services/tls_ca
+        common_name: credhub-kms
 
-variables:
-- name: provider-certificate
-  type: certificate
-  options:
-    ca: /services/tls_ca
-    common_name: credhub-kms
